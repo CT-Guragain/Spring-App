@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Home page: personalized hazard guide for your location">
+  <title>Disaster Response — Hazard Guide</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body data-page="home">
+<header class="global-header">
+  <a class="brand" href="index.html"><span class="brand-mark">DR</span><span>Disaster Response</span></a>
+  <nav id="mainNav">
+    <div class="system-status"><span class="status-dot"></span> System Online</div>
+  </nav>
+  <div class="header-actions">
+    <div class="guest-auth">
+      <button class="nav-link auth-btn" data-modal="loginModal">Login</button>
+      <button class="nav-link auth-btn" data-modal="signupModal">Sign Up</button>
+    </div>
+    <div class="session-auth hidden">
+      <span class="session-msg">Logged in as <b class="session-role-label">Citizen</b></span>
+      <button class="nav-link continue-workspace-btn">Continue to Workspace →</button>
+      <button class="nav-link logout-btn" aria-label="Log out">⎋ <span class="btn-label">Logout</span></button>
+    </div>
+    <div class="theme-control"><span>Theme</span><label class="switch"><input type="checkbox" class="theme-input" aria-label="Toggle dark theme"><span class="track"><span>☀</span><span>☾</span><i></i></span></label><span class="theme-state">OFF</span></div>
+    <a href="emergency.html?quick=1" class="sos-mini" title="Fast-send an SOS from anywhere" aria-label="Send SOS">✋ <span class="btn-label">SEND SOS</span></a>
+    <button class="hamburger" id="menuBtn" aria-label="Open navigation">☰</button>
+  </div>
+</header>
+
+<main class="app-shell">
+<section id="hazard" class="panel hazard-panel">
+  <div class="panel-heading"><div><span class="eyebrow">HOME · HAZARD GUIDE</span><h1>My Location: Hazard Guide</h1></div></div>
+  <div class="hazard-layout">
+    <article class="card location-card"><h2>Current Location</h2><h3>Kathmandu</h3><p>Bagmati Province, Nepal</p><p class="coordinates">27.7172° N, 85.3240° E</p><div id="locationMap" class="location-map"></div><p class="location-note" id="locationNote">Detecting your location…</p></article>
+    <article class="card hazard-info"><div><h3>Disaster Prone Zone</h3><p>Urban areas may face earthquake, landslide, flood and fire risks. Follow local emergency instructions.</p></div><div><h3>What to Expect</h3><p>Possible aftershocks, blocked roads, power interruptions, damaged structures and delayed emergency access.</p></div><div><h3>Prevention Methods</h3><p>Keep emergency supplies ready, secure heavy objects, identify exits and keep important contacts available.</p></div><div><h3>Precautions</h3><p>Move away from damaged structures, avoid unsafe roads and follow verified emergency announcements.</p></div></article>
+  </div>
+  <article class="card call-help-card" style="margin-top:16px" onclick="window.location.href='emergency.html'">
+    <div class="call-help-icon">🚨</div>
+    <div><h2>Need help right now?</h2><p>Open the Emergency Assistance screen to send an SOS.</p></div>
+    <span class="call-help-arrow">→</span>
+  </article>
+</section>
+</main>
+
+<div id="loginModal" class="modal">
+  <div class="modal-card">
+    <button class="modal-close">×</button>
+    <h2>Login</h2>
+    <label>Login as
+      <select class="role-select" required>
+        <option value="">Select Role</option>
+        <option value="citizen">Citizen</option>
+        <option value="rescuer">Rescuer</option>
+        <option value="office">Office Staff</option>
+      </select>
+    </label>
+    <label>Mobile Number<input type="tel" placeholder="98XXXXXXXX" required></label>
+    <label>Password<input type="password" placeholder="Password" required></label>
+    <button class="primary-btn login-submit">LOGIN</button>
+    <p><button class="text-btn" data-switch="forgotModal">Forgot Password?</button></p>
+    <p>Don't have an account? <button class="text-btn" data-switch="signupModal">SIGN UP</button></p>
+  </div>
+</div>
+<div id="forgotModal" class="modal">
+  <div class="modal-card">
+    <button class="modal-close">×</button>
+    <h2>Reset Password</h2>
+    <div class="step-track">
+      <span class="step-dot active" data-step-dot="1"></span>
+      <span class="step-dot" data-step-dot="2"></span>
+      <span class="step-dot" data-step-dot="3"></span>
+    </div>
+
+    <div class="forgot-step" data-step="1">
+      <p class="step-hint">Enter your mobile number and we'll send a verification code.</p>
+      <label>Mobile Number<input type="tel" class="forgot-mobile" placeholder="98XXXXXXXX" required></label>
+      <button class="primary-btn forgot-send-otp">SEND RESET CODE</button>
+      <p>Remembered your password? <button class="text-btn" data-switch="loginModal">LOGIN</button></p>
+    </div>
+
+    <div class="forgot-step hidden" data-step="2">
+      <p class="step-hint">Enter the 6-digit code sent to your mobile number.</p>
+      <label>OTP Code<input type="text" inputmode="numeric" maxlength="6" class="forgot-otp" placeholder="●●●●●●" required></label>
+      <button class="primary-btn forgot-verify-otp">VERIFY CODE</button>
+      <p><button class="text-btn forgot-resend-otp">Resend Code</button></p>
+    </div>
+
+    <div class="forgot-step hidden" data-step="3">
+      <p class="step-hint">Create a new password for your account.</p>
+      <label>New Password<input type="password" class="forgot-new-password" placeholder="New password" required></label>
+      <label>Confirm Password<input type="password" class="forgot-confirm-password" placeholder="Confirm password" required></label>
+      <button class="primary-btn forgot-reset-submit">RESET PASSWORD</button>
+    </div>
+
+    <div class="forgot-step hidden" data-step="4">
+      <div class="step-success">
+        <div class="step-success-icon">✓</div>
+        <p class="step-hint">Your password has been reset successfully.</p>
+      </div>
+      <button class="primary-btn forgot-done" data-switch="loginModal">BACK TO LOGIN</button>
+    </div>
+  </div>
+</div>
+<div id="signupModal" class="modal">
+  <div class="modal-card">
+    <button class="modal-close">×</button>
+    <h2>Create Citizen Account</h2>
+    <label>Mobile Number<input type="tel" placeholder="98XXXXXXXX" required></label>
+    <label>Name<input type="text" placeholder="Your name" required></label>
+    <label>Password<input type="password" placeholder="Password" required></label>
+    <button class="primary-btn signup-submit">SIGN UP</button>
+    <p>Already registered? <button class="text-btn" data-switch="loginModal">LOGIN</button></p>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

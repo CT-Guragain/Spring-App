@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Citizen workspace: hazard guide, prevention checklist, and nearby alerts">
+  <title>Citizen Workspace — Disaster Response</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body data-role="citizen">
+<header class="global-header">
+  <a class="brand" href="citizen.html"><span class="brand-mark">DR</span><span>Disaster Response</span></a>
+  <span class="role-badge">Citizen Workspace</span>
+  <nav id="mainNav">
+    <div class="system-status"><span class="status-dot"></span> System Online</div>
+  </nav>
+  <div class="header-actions">
+    <div class="theme-control"><span>Theme</span><label class="switch"><input type="checkbox" class="theme-input" aria-label="Toggle dark theme"><span class="track"><span>☀</span><span>☾</span><i></i></span></label><span class="theme-state">OFF</span></div>
+    <a href="emergency.html?quick=1" class="sos-mini" title="Fast-send an SOS from anywhere" aria-label="Send SOS">✋ <span class="btn-label">SEND SOS</span></a>
+    <button class="nav-link logout-btn" title="Log out and return to the main home page" aria-label="Log out">⎋ <span class="btn-label">Logout</span></button>
+    <button class="hamburger" id="menuBtn" aria-label="Open navigation">☰</button>
+  </div>
+</header>
+
+<main class="app-shell">
+
+<section id="hazard" class="panel hazard-panel">
+  <div class="panel-heading"><div><span class="eyebrow">CITIZEN · HAZARD GUIDE</span><h1>My Location: Hazard Guide</h1></div></div>
+  <div class="hazard-layout">
+    <article class="card location-card"><h2>Current Location</h2><h3>Kathmandu</h3><p>Bagmati Province, Nepal</p><p class="coordinates">27.7172° N, 85.3240° E</p><div id="locationMap" class="location-map"></div><p class="location-note" id="locationNote">Detecting your location…</p></article>
+    <article class="card hazard-info"><div><h3>Disaster Prone Zone</h3><p>Urban areas may face earthquake, landslide, flood and fire risks. Follow local emergency instructions.</p></div><div><h3>What to Expect</h3><p>Possible aftershocks, blocked roads, power interruptions, damaged structures and delayed emergency access.</p></div><div><h3>Prevention Methods</h3><p>Keep emergency supplies ready, secure heavy objects, identify exits and keep important contacts available.</p></div><div><h3>Precautions</h3><p>Move away from damaged structures, avoid unsafe roads and follow verified emergency announcements.</p></div></article>
+  </div>
+</section>
+
+<section id="prevention" class="panel">
+  <div class="panel-heading">
+    <div><span class="eyebrow">CITIZEN · PREPAREDNESS</span><h1>Prevention &amp; Precaution</h1></div>
+    <span class="live-badge">0/6 Ready</span>
+  </div>
+  <p class="workspace-note">Work through your personal readiness checklist. It updates automatically as you go.</p>
+  <div class="checklist">
+    <label class="checklist-item"><input type="checkbox" checked><span>Keep a 72-hour emergency kit ready — water, food, torch, first-aid</span></label>
+    <label class="checklist-item"><input type="checkbox" checked><span>Secure heavy furniture, shelves and appliances to the wall</span></label>
+    <label class="checklist-item"><input type="checkbox"><span>Identify two exit routes from your home and workplace</span></label>
+    <label class="checklist-item"><input type="checkbox"><span>Save emergency contacts and the nearest shelter location</span></label>
+    <label class="checklist-item"><input type="checkbox"><span>Know how to shut off gas, water and electricity at home</span></label>
+    <label class="checklist-item"><input type="checkbox"><span>Agree on a family meeting point in case you get separated</span></label>
+  </div>
+</section>
+
+<section id="alerts" class="panel">
+  <div class="panel-heading"><div><span class="eyebrow">CITIZEN · NEARBY</span><h1>High Alert Near You</h1></div></div>
+  <div class="rescuer-grid">
+    <article class="task-card">
+      <span class="severity high">HIGH</span>
+      <h2>Landslide Warning</h2>
+      <p>Sankhu Road · 1.2 km from you. Heavy rainfall has loosened the hillside.</p>
+      <small>Issued 20 min ago · Disaster Authority</small>
+    </article>
+    <article class="task-card">
+      <span class="severity medium">MEDIUM</span>
+      <h2>Flood Watch</h2>
+      <p>Bagmati Riverside · 2.8 km from you. Water levels are rising, stay alert.</p>
+      <small>Issued 3 hours ago · Disaster Authority</small>
+    </article>
+    <article class="task-card">
+      <span class="severity safe">CLEARED</span>
+      <h2>Thamel Fire Hazard</h2>
+      <p>City Center · 3.5 km from you. Earlier hazard has been contained.</p>
+      <small>Resolved 1 hour ago</small>
+    </article>
+  </div>
+</section>
+
+<article class="card call-help-card" onclick="window.location.href='emergency.html'">
+  <div class="call-help-icon">🚨</div>
+  <div><h2>Need help right now?</h2><p>Open the Emergency Assistance screen to send an SOS.</p></div>
+  <span class="call-help-arrow">→</span>
+</article>
+
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>

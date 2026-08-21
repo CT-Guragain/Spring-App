@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Rescuer workspace: assigned tasks, head office contact, and live alert map">
+  <title>Rescuer Workspace — Disaster Response</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body data-role="rescuer">
+<header class="global-header">
+  <a class="brand" href="rescuer.html"><span class="brand-mark">DR</span><span>Disaster Response</span></a>
+  <span class="role-badge">Rescuer Workspace</span>
+  <nav id="mainNav">
+    <div class="system-status"><span class="status-dot"></span> System Online</div>
+  </nav>
+  <div class="header-actions">
+    <div class="theme-control"><span>Theme</span><label class="switch"><input type="checkbox" class="theme-input" aria-label="Toggle dark theme"><span class="track"><span>☀</span><span>☾</span><i></i></span></label><span class="theme-state">OFF</span></div>
+    <a href="emergency.html?quick=1" class="sos-mini" title="Fast-send an SOS from anywhere" aria-label="Send SOS">✋ <span class="btn-label">SEND SOS</span></a>
+    <button class="nav-link logout-btn" title="Log out and return to the main home page" aria-label="Log out">⎋ <span class="btn-label">Logout</span></button>
+    <button class="hamburger" id="menuBtn" aria-label="Open navigation">☰</button>
+  </div>
+</header>
+
+<main class="app-shell">
+
+<section id="tasks" class="panel">
+  <div class="panel-heading">
+    <div><span class="eyebrow">RESCUER · WORKSPACE</span><h1>My Assigned Tasks</h1></div>
+    <button id="availability" class="availability available">AVAILABLE</button>
+  </div>
+  <div class="rescuer-grid">
+    <article class="task-card">
+      <span class="severity high">HIGH</span>
+      <h2>Family trapped — collapsed wall</h2>
+      <p>Thapathali, Ward 11 · 0.8 km away</p>
+      <small>Reported 6 min ago</small>
+      <div class="task-actions">
+        <button data-status="Accepted">ACCEPT</button>
+        <button data-status="En Route">EN ROUTE</button>
+        <button data-status="Resolved">RESOLVE</button>
+      </div>
+      <span class="task-status">Status: Pending</span>
+    </article>
+    <article class="task-card">
+      <span class="severity medium">MEDIUM</span>
+      <h2>Elderly resident needs evacuation</h2>
+      <p>Sankhu Road · 1.4 km away</p>
+      <small>Reported 18 min ago</small>
+      <div class="task-actions">
+        <button data-status="Accepted">ACCEPT</button>
+        <button data-status="En Route">EN ROUTE</button>
+        <button data-status="Resolved">RESOLVE</button>
+      </div>
+      <span class="task-status">Status: Pending</span>
+    </article>
+    <article class="task-card">
+      <span class="severity live">LIVE</span>
+      <h2>Road blocked — assist detour</h2>
+      <p>Bagmati Riverside · 2.1 km away</p>
+      <small>Reported 40 min ago</small>
+      <div class="task-actions">
+        <button data-status="Accepted">ACCEPT</button>
+        <button data-status="En Route">EN ROUTE</button>
+        <button data-status="Resolved">RESOLVE</button>
+      </div>
+      <span class="task-status">Status: En Route</span>
+    </article>
+  </div>
+</section>
+
+<section id="contact-hq" class="panel">
+  <div class="panel-heading"><div><span class="eyebrow">RESCUER · SUPPORT</span><h1>Contact Head Office</h1></div></div>
+  <p class="workspace-note">Reach the duty officer directly, or escalate a critical case to the command center.</p>
+  <div class="dashboard-grid">
+    <a href="tel:+9771660011222" class="call-help-card" style="border-color:var(--info)">
+      <div class="call-help-icon" style="background:#dce9fb">📞</div>
+      <div><h2>Call Duty Officer</h2><p>+977 1660 011 222 · Available 24/7</p></div>
+      <span class="call-help-arrow" style="color:var(--info)">→</span>
+    </a>
+    <a href="tel:+9771660099911" class="call-help-card">
+      <div class="call-help-icon">🚨</div>
+      <div><h2>Report Critical Incident</h2><p>+977 1660 099 911 · Escalate to command center</p></div>
+      <span class="call-help-arrow">→</span>
+    </a>
+  </div>
+</section>
+
+<section class="panel">
+  <div class="panel-heading"><div><span class="eyebrow">RESCUER · NEARBY</span><h1>High Alert Zones Near You</h1></div></div>
+  <div class="rescuer-grid">
+    <article class="task-card">
+      <span class="severity high">HIGH</span>
+      <h2>Sankhu — Landslide</h2>
+      <p>Hillside instability after heavy rainfall · 1.2 km away</p>
+      <small>Issued 20 min ago</small>
+    </article>
+    <article class="task-card">
+      <span class="severity medium">MEDIUM</span>
+      <h2>Bagmati Riverside — Flood Watch</h2>
+      <p>Water levels rising, monitor closely · 2.1 km away</p>
+      <small>Issued 3 hours ago</small>
+    </article>
+    <article class="task-card">
+      <span class="severity safe">SAFE</span>
+      <h2>Thamel — Cleared</h2>
+      <p>Earlier fire hazard has been contained · 3.5 km away</p>
+      <small>Resolved 1 hour ago</small>
+    </article>
+  </div>
+</section>
+
+<section id="map" class="panel">
+  <div class="panel-heading"><div><span class="eyebrow">RESCUER · LIVE MAP</span><h1>Citizens Near High Alert</h1></div><span class="live-badge">● Live · Updated 1 min ago</span></div>
+  <div id="teamMap" class="office-map"></div>
+</section>
+
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>

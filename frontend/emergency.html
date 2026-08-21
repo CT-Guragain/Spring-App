@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Send an emergency SOS immediately">
+  <title>Emergency SOS — Disaster Response</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="global-header">
+  <a class="brand" href="index.html"><span class="brand-mark">DR</span><span>Disaster Response</span></a>
+  <nav id="mainNav">
+    <a class="nav-link home-link" href="index.html">⌂ Home</a>
+  </nav>
+  <div class="header-actions">
+    <div class="system-status"><span class="status-dot"></span> System Online</div>
+    <div class="theme-control"><span>Theme</span><label class="switch"><input type="checkbox" class="theme-input" aria-label="Toggle dark theme"><span class="track"><span>☀</span><span>☾</span><i></i></span></label><span class="theme-state">OFF</span></div>
+    <button class="hamburger" id="menuBtn" aria-label="Open navigation">☰</button>
+  </div>
+</header>
+
+<main class="app-shell">
+<section id="sos" class="panel">
+  <div class="panel-heading"><div><span class="eyebrow">EMERGENCY · SOS</span><h1>Send Emergency SOS</h1></div></div>
+  <div class="phone-wrap">
+    <div class="phone">
+      <div class="phone-top"></div>
+      <div class="phone-screen">
+        <div class="phone-label">EMERGENCY ASSISTANCE</div>
+        <h2>Are you safe?</h2>
+        <div id="sosButton" class="sos-circle">
+          <div><span>✋</span><br><b>SOS</b></div>
+        </div>
+        <p id="sosMessage" class="sos-message">FOR EXTREME EMERGENCIES ONLY<br><b>PRESS AND HOLD TO CONFIRM SEND</b></p>
+        <button id="resetSos" class="reset-btn hidden">Send Another SOS</button>
+        <div class="optional-fields">
+          <label>What's happening? (optional)<input type="text" placeholder="e.g. Trapped under debris"></label>
+          <label>People with you (optional)<input type="number" placeholder="1"></label>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
