@@ -1,4 +1,4 @@
-# Suraksha — Disaster Response Backend (DevRumble 2.0)
+#Disaster Response Backend (DevRumble 2.0)
 
 ## Setup (5 minutes)
 
@@ -18,7 +18,7 @@ so you can try the whole flow before the real frontend is ready.
 All passwords: `test123`
 - Rescuer phones: 9800000001 through 9800000008
 - Office phone: 9811111111
-- Citizen: no login — just enter name/phone on the form, they're sent with the report only.
+- Citizen: first register on the form, and then login as a citizen.
 
 ## Test flow
 1. Open http://localhost:5000 → "Citizen" → allow location → hit the red SOS button.
