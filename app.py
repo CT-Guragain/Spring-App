@@ -1,11 +1,17 @@
 """
 DevRumble 2.0 - Disaster Response Backend
 Roles:
-  - citizen: NO account. Sends name/phone as plain fields with each report. Never logged in.
-  - rescuer: pre-seeded account (phone + password). Represents one rescue team.
-  - office:  pre-seeded account (phone + password). Sees everything, can reassign.
+  - citizen: has a real account now (Citizen table below) — name/phone/password,
+    saved via POST /api/auth/citizen-signup. Reports still don't require login
+    (a citizen can SOS without ever signing up), but signing up persists them.
+  - rescuer: pre-seeded account ONLY (phone + password, from seed.py). No
+    self-registration route exists on purpose — represents one rescue team.
+  - office:  pre-seeded account ONLY (phone + password, from seed.py). Sees
+    everything, can reassign.
 
 Frontend is served directly from ./frontend (same origin as the API -> no CORS needed).
+Runs on 0.0.0.0 so other devices on the same network can reach it via this
+machine's LAN IP, not just localhost.
 """
 
 import math
@@ -23,7 +29,9 @@ db = SQLAlchemy(app)
 # ---------------------------------------------------------------- MODELS
 
 class StaffUser(db.Model):
-    """A rescuer (=one rescue team) or a head-office user. Citizens are NOT in this table."""
+    """A rescuer (=one rescue team) or a head-office user. Citizens are NOT in this table.
+    IMPORTANT: there is no signup route for this table — the ONLY way a row
+    exists here is via seed.py. Login only ever succeeds against seeded rows."""
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     phone = db.Column(db.String(20), unique=True, nullable=False)
@@ -40,6 +48,20 @@ class StaffUser(db.Model):
             "lat": self.lat, "lon": self.lon, "status": self.status,
             "is_government": self.is_government,
         }
+
+
+class Citizen(db.Model):
+    """A citizen who used the Sign Up form. Purely a record — citizens still
+    never need to log in to send an SOS (create_report stays public), this
+    just persists the account so it's real and checkable in the database."""
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    phone = db.Column(db.String(20), unique=True, nullable=False)
+    password_hash = db.Column(db.String(255), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def to_dict(self):
+        return {"id": self.id, "name": self.name, "phone": self.phone, "created_at": self.created_at.isoformat()}
 
 
 class Report(db.Model):
@@ -153,6 +175,38 @@ def login():
 def logout():
     session.clear()
     return jsonify({"ok": True})
+
+
+@app.route("/api/auth/citizen-signup", methods=["POST"])
+def citizen_signup():
+    """PUBLIC — saves a real Citizen row (name/phone/password). Citizens still
+    never need to log in to send an SOS; this just persists the account."""
+    data = request.get_json(force=True)
+    name = (data.get("name") or "").strip()
+    phone = (data.get("phone") or "").strip()
+    password = data.get("password") or ""
+
+    if not name or not phone or not password:
+        return jsonify({"error": "name, phone and password are all required"}), 400
+
+    if Citizen.query.filter_by(phone=phone).first():
+        return jsonify({"error": "an account with this phone number already exists"}), 409
+
+    citizen = Citizen(name=name, phone=phone, password_hash=generate_password_hash(password))
+    db.session.add(citizen)
+    db.session.commit()
+    return jsonify(citizen.to_dict()), 201
+
+
+@app.route("/api/citizens")
+def list_citizens():
+    """office-only — lets you verify signups actually landed in the database
+    from the app itself, without opening a SQLite client."""
+    staff = require_role("office")
+    if not staff:
+        return jsonify({"error": "office login required"}), 403
+    citizens = Citizen.query.order_by(Citizen.created_at.desc()).all()
+    return jsonify([c.to_dict() for c in citizens])
 
 
 @app.route("/api/me")
@@ -320,4 +374,7 @@ def index():
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
-    app.run(debug=True, port=5000)
+    # host="0.0.0.0" makes this reachable from other devices on the same
+    # network via this machine's LAN IP (e.g. http://192.168.x.x:5000),
+    # not just from localhost on this machine.
+    app.run(host="0.0.0.0", debug=True, port=5000)
