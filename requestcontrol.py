@@ -1,11 +1,11 @@
 """
 DevRumble 2.0 - Disaster Response Backend
 Roles:
-  - citizen: has a real account now (Citizen table below) — name/phone/password,
+  - citizen: has a real account now (Citizen table below) name/phone/password,
     saved via POST /api/auth/citizen-signup. Reports still don't require login
     (a citizen can SOS without ever signing up), but signing up persists them.
   - rescuer: pre-seeded account ONLY (phone + password, from seed.py). No
-    self-registration route exists on purpose — represents one rescue team.
+    self-registration route exists on purpose - represents one rescue team.
   - office:  pre-seeded account ONLY (phone + password, from seed.py). Sees
     everything, can reassign.
 
@@ -30,8 +30,7 @@ app.config["MAX_CONTENT_LENGTH"] = 100_000  # reject any request body over ~100K
 db = SQLAlchemy(app)
 
 # Rate limiting — protects the two PUBLIC, no-login endpoints (create_report,
-# citizen_signup) from someone spamming requests during a demo. Limits are
-# applied per-IP-address. default_limits covers every route as a fallback;
+#Limeted request applied per-IP-address. default_limits covers every route as a fallback;
 # the tighter per-route @limiter.limit(...) decorators below override it
 # just for the two public write endpoints.
 limiter = Limiter(get_remote_address, app=app, default_limits=["60 per minute"])
